@@ -69,7 +69,7 @@ impl From<BobYardEvent> for EventIndex {
     fn from(event: BobYardEvent) -> Self { EventIndex::BobYard(event) }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum BobYardEvent {
     List(List),
     DeList(DeList),

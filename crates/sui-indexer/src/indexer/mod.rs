@@ -277,7 +277,7 @@ async fn download_checkpoint_data(
         join_all(checkpoint.transactions.chunks(MULTI_GET_CHUNK_SIZE).map(
             |digests| {
                 multi_get_full_transactions(
-                    sui_client.read_api().clone(),
+                    sui_client.read_api(),
                     digests.to_vec(),
                 )
             },
@@ -319,7 +319,7 @@ async fn download_checkpoint_data(
         .collect();
 
     let changed_objects =
-        fetch_changed_objects(sui_client.read_api().clone(), object_changes)
+        fetch_changed_objects(sui_client.read_api(), object_changes)
             .await
             .map_err(|e| {
                 anyhow::format_err!("fetch_changed_objects error = {e}")

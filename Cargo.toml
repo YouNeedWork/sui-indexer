@@ -9,6 +9,7 @@ members = [
 [workspace.package]
 version = "1.0.0"
 
+
 [profile.release]
 # debug = 1 means line charts only, which is minimum needed for good stack traces
 debug = 1
@@ -28,6 +29,6 @@ anyhow = { version = "1.0.64", features = ["backtrace"] }
 tracing = "0.1"
 tracing-subscriber = "0.2.0"
 lapin = "2.1.1"
-sui-sdk = { git = "https://github.com/MystenLabs/sui", rev="a2af559" }
+sui-sdk = { git = "https://github.com/MystenLabs/sui", rev="fdfd864" }
 chrono = "0.4.24"
 redis = { version = "0.23.0", features = ["tokio-comp"] }

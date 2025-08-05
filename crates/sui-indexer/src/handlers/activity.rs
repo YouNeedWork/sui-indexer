@@ -18,7 +18,7 @@ pub fn parse_tokens_activity(
                 None
             }
         })
-        .collect::<Vec<&BobYardEvent>>();
+        .collect::<Vec<BobYardEvent>>();
 
     let token_activities = Vec::new();
     let changed_tokens = tokens

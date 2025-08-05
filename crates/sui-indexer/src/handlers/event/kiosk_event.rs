@@ -45,7 +45,7 @@ impl ItemListedWithSender {
     }
 }
 
-impl From<(&ItemListedWithSender)> for lists::List {
+impl From<&ItemListedWithSender> for lists::List {
     fn from(list: &ItemListedWithSender) -> Self {
         lists::List {
             chain_id: 1,

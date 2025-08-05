@@ -9,7 +9,7 @@ path = "src/main.rs"
 
 [dependencies]
 tokio = { workspace = true }
-diesel = { version = "2.0.3", features = ["postgres","r2d2"] }
+diesel = { version = "2.0.3", features = ["postgres","r2d2","chrono"] }
 diesel-async = { version = "0.2.1",features = ["postgres"]}
 diesel-derive-enum = { version = "^2.0.1", features = ["postgres"] }
 futures = {workspace=true}
