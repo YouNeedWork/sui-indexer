@@ -1,5 +1,7 @@
 use crate::schema::orders;
 use anyhow::Result;
+use chrono::DateTime;
+use chrono::Utc;
 use diesel::insert_into;
 use diesel::prelude::*;
 use diesel_derive_enum::DbEnum;
@@ -26,9 +28,9 @@ pub struct Order {
     pub buyer_address: String,
     pub order_type: OrderType,
     pub value: i64,
-    pub sell_time: chrono::NaiveDateTime,
-    pub created_at: Option<chrono::NaiveDateTime>,
-    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub sell_time: DateTime<Utc>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 pub fn batch_insert(

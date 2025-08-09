@@ -17,7 +17,7 @@ CREATE TABLE orders (
     "value" int8 NOT NULL,
     "order_type" order_type NOT NULL,
 
-    "sell_time" timestamp NOT NULL,
-    "created_at" timestamp DEFAULT now(),
-    "updated_at" timestamp DEFAULT now()
+    "sell_time" timestamptz NOT NULL,
+    "created_at" timestamptz DEFAULT now(),
+    "updated_at" timestamptz DEFAULT now()
 );

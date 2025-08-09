@@ -4,6 +4,7 @@ use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::schema::lists;
+use chrono::{DateTime, Utc};
 use diesel_derive_enum::DbEnum;
 
 #[derive(DbEnum, Debug, Clone, Copy, Deserialize, Serialize, PartialEq)]
@@ -31,15 +32,15 @@ pub struct List {
     pub chain_id: i64,
     pub coin_id: i32,
     pub list_id: String,
-    pub list_time: chrono::NaiveDateTime,
+    pub list_time: DateTime<Utc>,
     pub token_id: String,
     pub seller_address: String,
     pub seller_value: i64,
     pub list_type: ListType,
     pub market_type: MarketType,
-    pub expire_time: Option<chrono::NaiveDateTime>,
-    pub created_at: Option<chrono::NaiveDateTime>,
-    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub expire_time: Option<DateTime<Utc>>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 #[derive(Queryable, Debug, Clone)]
@@ -49,14 +50,14 @@ pub struct QueryList {
     pub chain_id: i64,
     pub coin_id: i32,
     pub list_id: String,
-    pub list_time: chrono::NaiveDateTime,
+    pub list_time: DateTime<Utc>,
     pub token_id: String,
     pub seller_address: String,
     pub seller_value: i64,
     pub list_type: ListType,
-    pub expire_time: chrono::NaiveDateTime,
-    pub created_at: Option<chrono::NaiveDateTime>,
-    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub expire_time: DateTime<Utc>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 pub fn batch_insert(
@@ -78,7 +79,7 @@ pub fn cancel(connection: &mut PgConnection, list_id: &str) -> Result<usize> {
 
 pub fn dealed(connection: &mut PgConnection, list_id: &str) -> Result<usize> {
     diesel::update(lists::table.filter(lists::list_id.eq(list_id)))
-        .set(lists::list_type.eq(ListType::Sold))
+        .set(lists::list_type.eq(ListType::Canceled))
         .execute(connection)
         .map_err(|e| anyhow::anyhow!(e.to_string()))
 }

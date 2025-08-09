@@ -20,7 +20,7 @@ CREATE TABLE collections (
     "tx" varchar(255),
     "metadata" text NOT NULL,
     "verify" bool NOT NULL DEFAULT false,
-    "last_metadata_sync" BIGINT NOT NULL,
-    "created_at" BIGINT NOT NULL,
-    "updated_at" BIGINT NOT NULL
+    "last_metadata_sync" timestamptz NOT NULL,
+    "created_at" timestamptz NOT NULL,
+    "updated_at" timestamptz NOT NULL
 );

@@ -2,6 +2,8 @@ use crate::models::collections::Collection;
 use crate::models::tokens::Token;
 use crate::schema::activities;
 use anyhow::Result;
+use chrono::DateTime;
+use chrono::Utc;
 use diesel::insert_into;
 use diesel::prelude::*;
 use diesel_derive_enum::DbEnum;
@@ -41,9 +43,9 @@ pub struct Activity {
     pub token_amount: i64,
     pub coin_type: Option<String>,
     pub coin_amount: i64,
-    pub transaction_timestamp: chrono::NaiveDateTime,
-    pub created_at: chrono::NaiveDateTime,
-    pub updated_at: chrono::NaiveDateTime,
+    pub transaction_timestamp: DateTime<Utc>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 pub fn batch_insert(
@@ -80,9 +82,9 @@ impl Activity {
             token_amount: 0,
             coin_type: None,
             coin_amount: 0,
-            transaction_timestamp: chrono::Utc::now().naive_utc(),
-            created_at: chrono::Utc::now().naive_utc(),
-            updated_at: chrono::Utc::now().naive_utc(),
+            transaction_timestamp: Utc::now(),
+            created_at: Utc::now(),
+            updated_at: Utc::now(),
         }
     }
 
@@ -109,9 +111,9 @@ impl Activity {
             token_amount: 0,
             coin_type: None,
             coin_amount: 0,
-            transaction_timestamp: chrono::Utc::now().naive_utc(),
-            created_at: chrono::Utc::now().naive_utc(),
-            updated_at: chrono::Utc::now().naive_utc(),
+            transaction_timestamp: Utc::now(),
+            created_at: Utc::now(),
+            updated_at: Utc::now(),
         }
     }
 }

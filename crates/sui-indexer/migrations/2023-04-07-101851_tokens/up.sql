@@ -25,8 +25,8 @@ CREATE TABLE tokens (
    "image" varchar,
    "tx" varchar,
    "status" token_status,
-   "created_at" BIGINT NOT NULL,
-   "updated_at" BIGINT NOT NULL
+   "created_at" timestamptz NOT NULL,
+   "updated_at" timestamptz NOT NULL
 );
 
 CREATE INDEX token_id_index ON tokens (token_id);

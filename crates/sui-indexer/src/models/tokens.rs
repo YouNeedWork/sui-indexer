@@ -1,5 +1,7 @@
 use crate::schema::tokens;
 use anyhow::Result;
+use chrono::DateTime;
+use chrono::Utc;
 use diesel::insert_into;
 use diesel::prelude::*;
 use diesel::upsert::excluded;
@@ -37,8 +39,8 @@ pub struct Token {
     pub image: Option<String>,
     pub tx: Option<String>,
     pub status: TokenStatus,
-    pub created_at: Option<i64>,
-    pub updated_at: Option<i64>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 #[derive(Queryable, PartialEq, Debug, Clone)]

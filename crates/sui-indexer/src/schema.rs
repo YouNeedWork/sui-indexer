@@ -50,9 +50,9 @@ diesel::table! {
         token_amount -> Int8,
         coin_type -> Nullable<Text>,
         coin_amount -> Nullable<Int8>,
-        transaction_timestamp -> Timestamp,
-        created_at -> Nullable<Timestamp>,
-        updated_at -> Nullable<Timestamp>,
+        transaction_timestamp -> Timestamptz,
+        created_at -> Nullable<Timestamptz>,
+        updated_at -> Nullable<Timestamptz>,
     }
 }
 
@@ -98,9 +98,9 @@ diesel::table! {
         tx -> Nullable<Varchar>,
         metadata -> Text,
         verify -> Bool,
-        last_metadata_sync -> Int8,
-        created_at -> Int8,
-        updated_at -> Int8,
+        last_metadata_sync -> Timestamptz,
+        created_at -> Timestamptz,
+        updated_at -> Timestamptz,
     }
 }
 
@@ -115,17 +115,17 @@ diesel::table! {
         coin_id -> Int4,
         #[max_length = 255]
         list_id -> Varchar,
-        list_time -> Timestamp,
+        list_time -> Timestamptz,
         #[max_length = 255]
         token_id -> Varchar,
         #[max_length = 255]
         seller_address -> Varchar,
         seller_value -> Int8,
-        expire_time -> Nullable<Timestamp>,
+        expire_time -> Nullable<Timestamptz>,
         list_type -> ListType,
         market_type -> MarketType,
-        created_at -> Nullable<Timestamp>,
-        updated_at -> Nullable<Timestamp>,
+        created_at -> Nullable<Timestamptz>,
+        updated_at -> Nullable<Timestamptz>,
     }
 }
 
@@ -145,10 +145,10 @@ diesel::table! {
         buyer_address -> Varchar,
         offer_value -> Int8,
         offer_type -> OfferType,
-        expire_time -> Timestamp,
-        offer_time -> Timestamp,
-        created_at -> Nullable<Timestamp>,
-        updated_at -> Nullable<Timestamp>,
+        expire_time -> Timestamptz,
+        offer_time -> Timestamptz,
+        created_at -> Nullable<Timestamptz>,
+        updated_at -> Nullable<Timestamptz>,
     }
 }
 
@@ -172,9 +172,9 @@ diesel::table! {
         buyer_address -> Varchar,
         value -> Int8,
         order_type -> OrderType,
-        sell_time -> Timestamp,
-        created_at -> Nullable<Timestamp>,
-        updated_at -> Nullable<Timestamp>,
+        sell_time -> Timestamptz,
+        created_at -> Nullable<Timestamptz>,
+        updated_at -> Nullable<Timestamptz>,
     }
 }
 
@@ -207,8 +207,8 @@ diesel::table! {
         image -> Nullable<Varchar>,
         tx -> Nullable<Varchar>,
         status -> Nullable<TokenStatus>,
-        created_at -> Int8,
-        updated_at -> Int8,
+        created_at -> Timestamptz,
+        updated_at -> Timestamptz,
     }
 }
 

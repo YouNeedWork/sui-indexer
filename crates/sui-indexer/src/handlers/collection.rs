@@ -94,11 +94,10 @@ pub fn parse_collection(
                     metadata: collection_data_in_json,
                     tx,
                     verify: false,
-                    last_metadata_sync: Utc::now()
-                        .naive_utc()
-                        .timestamp_millis(),
-                    created_at: *timestamp as i64,
-                    updated_at: *timestamp as i64,
+                    last_metadata_sync: Utc::now(), /* TODO: change in the
+                                                     * futures */
+                    created_at: Utc::now(),
+                    updated_at: Utc::now(),
                 };
                 return Some((status.clone(), collection));
             }

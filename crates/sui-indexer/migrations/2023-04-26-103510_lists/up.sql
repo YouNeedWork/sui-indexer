@@ -19,13 +19,13 @@ CREATE TABLE lists (
      "chain_id" int8 NOT NULL,
      "coin_id" int4 NOT NULL,
      "list_id" varchar(255) NOT NULL,
-     "list_time" timestamp NOT NULL,
+     "list_time" timestamptz NOT NULL,
      "token_id" varchar(255) NOT NULL,
      "seller_address" varchar(255) NOT NULL,
      "seller_value" int8 NOT NULL,
-     "expire_time" timestamp,
+     "expire_time" timestamptz,
      "list_type" list_type NOT NULL,
      "market_type" market_type NOT NULL,
-     "created_at" timestamp DEFAULT now(),
-     "updated_at" timestamp DEFAULT now()
+     "created_at" timestamptz DEFAULT now(),
+     "updated_at" timestamptz DEFAULT now()
 );

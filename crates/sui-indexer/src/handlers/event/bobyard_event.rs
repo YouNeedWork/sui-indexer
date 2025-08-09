@@ -4,7 +4,7 @@ use crate::models::orders::OrderType;
 use crate::models::{lists, offers, orders};
 
 use anyhow::Result;
-use chrono::{NaiveDateTime, Utc};
+use chrono::{DateTime, NaiveDateTime, Utc};
 use diesel::PgConnection;
 use serde::{Deserialize, Serialize};
 use sui_sdk::rpc_types::SuiEvent;
@@ -85,20 +85,20 @@ impl From<&List> for lists::List {
             chain_id: 1,
             coin_id: 1,
             list_id: list.list_id.clone(),
-            list_time: Utc::now().naive_utc(),
+            list_time: Utc::now(),
             token_id: list.list_item_id.clone(),
             seller_address: list.owner.clone(),
             seller_value: list.ask.parse().unwrap(),
             list_type: ListType::Listed,
             market_type: lists::MarketType::BobYard,
             expire_time: Some(
-                NaiveDateTime::from_timestamp_millis(
+                DateTime::from_timestamp_millis(
                     list.expire_time.parse().unwrap(),
                 )
                 .unwrap(),
             ),
-            created_at: Some(Utc::now().naive_utc()),
-            updated_at: Some(Utc::now().naive_utc()),
+            created_at: Some(Utc::now()),
+            updated_at: Some(Utc::now()),
         }
     }
 }
@@ -113,8 +113,8 @@ impl From<&Buy> for orders::Order {
             value: buy.ask.parse().unwrap(),
             seller_address: buy.owner.clone(),
             order_type: OrderType::Sold,
-            created_at: Some(Utc::now().naive_utc()),
-            updated_at: Some(Utc::now().naive_utc()),
+            created_at: Some(Utc::now()),
+            updated_at: Some(Utc::now()),
             list_id: buy.list_id.clone(),
             offer_id: None,
             sell_time: Default::default(),
@@ -132,13 +132,13 @@ impl From<&MakeOffer> for offers::Offer {
             buyer_address: make_offer.owner.clone(),
             offer_type: OfferType::Listed,
             offer_value: make_offer.offer_amount.parse().unwrap(),
-            expire_time: NaiveDateTime::from_timestamp_millis(
+            expire_time: DateTime::from_timestamp_millis(
                 make_offer.expire_time.parse().unwrap(),
             )
             .unwrap(),
             offer_time: Default::default(),
-            created_at: Some(Utc::now().naive_utc()),
-            updated_at: Some(Utc::now().naive_utc()),
+            created_at: Some(Utc::now()),
+            updated_at: Some(Utc::now()),
         }
     }
 }
@@ -153,8 +153,8 @@ impl From<&AcceptOffer> for orders::Order {
             value: accept_offer.offer_amount.parse().unwrap(),
             seller_address: accept_offer.owner.clone(),
             order_type: OrderType::Offer,
-            created_at: Some(Utc::now().naive_utc()),
-            updated_at: Some(Utc::now().naive_utc()),
+            created_at: Some(Utc::now()),
+            updated_at: Some(Utc::now()),
             list_id: accept_offer.list_id.clone(),
             offer_id: Some(accept_offer.offer_id.clone()),
             sell_time: Default::default(),
@@ -207,8 +207,7 @@ pub fn event_handle(
         BobYardEvent::List(list) => {
             let mut list: lists::List = list.into();
             list.list_time =
-                NaiveDateTime::from_timestamp_millis(event_time as i64)
-                    .unwrap();
+                DateTime::from_timestamp_millis(event_time as i64).unwrap();
             info!("list {:?}", list);
             lists::batch_insert(pg, &vec![list]).expect("batch_insert error");
         }
@@ -223,8 +222,7 @@ pub fn event_handle(
             let mut order: orders::Order = buy.into();
             info!("buy {:?}", order);
             order.sell_time =
-                NaiveDateTime::from_timestamp_millis(event_time as i64)
-                    .unwrap();
+                DateTime::from_timestamp_millis(event_time as i64).unwrap();
             orders::batch_insert(pg, &vec![order]).expect("batch_insert error");
         }
         BobYardEvent::AcceptOffer(accept_offer) => {
@@ -236,15 +234,13 @@ pub fn event_handle(
             let mut order: orders::Order = accept_offer.into();
             info!("accept_offer {:?}", order);
             order.sell_time =
-                NaiveDateTime::from_timestamp_millis(event_time as i64)
-                    .unwrap();
+                DateTime::from_timestamp_millis(event_time as i64).unwrap();
             orders::batch_insert(pg, &vec![order]).expect("batch_insert error");
         }
         BobYardEvent::MakeOffer(make_offer) => {
             let mut offer_to_db: offers::Offer = make_offer.into();
             offer_to_db.offer_time =
-                NaiveDateTime::from_timestamp_millis(event_time as i64)
-                    .unwrap();
+                DateTime::from_timestamp_millis(event_time as i64).unwrap();
             info!("offer_to_db {:?}", offer_to_db);
             offers::batch_insert(pg, &vec![offer_to_db])
                 .expect("batch_insert error");

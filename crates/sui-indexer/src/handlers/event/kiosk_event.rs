@@ -1,5 +1,5 @@
 use anyhow::Result;
-use chrono::{NaiveDateTime, Utc};
+use chrono::{DateTime, NaiveDateTime, Utc};
 use diesel::PgConnection;
 
 use crate::models::lists::{self, ListType, MarketType};
@@ -51,15 +51,15 @@ impl From<&ItemListedWithSender> for lists::List {
             chain_id: 1,
             coin_id: 1,
             list_id: list.kiosk.clone(),
-            list_time: Utc::now().naive_utc(),
+            list_time: Utc::now(),
             token_id: list.id.clone(),
             seller_address: list.sender.clone(),
             seller_value: list.price.parse().unwrap(),
             list_type: ListType::Listed,
             market_type: MarketType::Kiosk,
             expire_time: None,
-            created_at: Some(Utc::now().naive_utc()),
-            updated_at: Some(Utc::now().naive_utc()),
+            created_at: Some(Utc::now()),
+            updated_at: Some(Utc::now()),
         }
     }
 }
@@ -101,8 +101,7 @@ pub fn event_handle(
         KioskEvent::ItemListed(list) => {
             let mut list: lists::List = list.into();
             list.list_time =
-                NaiveDateTime::from_timestamp_millis(event_time as i64)
-                    .unwrap();
+                DateTime::from_timestamp_millis(event_time as i64).unwrap();
 
             info!("list {:?}", list);
             lists::batch_insert(pg, &vec![list]).expect("batch_insert error");

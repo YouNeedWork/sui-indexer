@@ -1,5 +1,7 @@
 use crate::schema::offers;
 use anyhow::Result;
+use chrono::DateTime;
+use chrono::Utc;
 use diesel::insert_into;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -26,10 +28,10 @@ pub struct Offer {
     pub buyer_address: String,
     pub offer_value: i64,
     pub offer_type: OfferType,
-    pub expire_time: chrono::NaiveDateTime,
-    pub offer_time: chrono::NaiveDateTime,
-    pub created_at: Option<chrono::NaiveDateTime>,
-    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub expire_time: chrono::DateTime<Utc>,
+    pub offer_time: chrono::DateTime<Utc>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 pub fn batch_insert(

@@ -27,7 +27,7 @@ CREATE TABLE activities (
    "token_amount" int8 NOT NULL,
    "coin_type" text,
    "coin_amount" int8,
-   "transaction_timestamp" timestamp NOT NULL,
-   "created_at" timestamp DEFAULT now(),
-   "updated_at" timestamp DEFAULT now()
+   "transaction_timestamp" TIMESTAMPTZ NOT NULL,
+   "created_at" TIMESTAMPTZ DEFAULT now(),
+   "updated_at" TIMESTAMPTZ DEFAULT now()
 );

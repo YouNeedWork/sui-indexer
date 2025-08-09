@@ -1,21 +1,10 @@
 use anyhow::Result;
+use chrono::{DateTime, Utc};
 use diesel::insert_into;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::schema::collections;
-
-// "collection_name" varchar(255) NOT NULL,
-// "description" varchar NOT NULL,
-// "supply" int8 NOT NULL,
-// "version" int8 NOT NULL,
-// "metadata_uri" text NOT NULL,
-// "tx" varchar(255),
-// "metadata" text NOT NULL,
-// "verify" bool NOT NULL DEFAULT false,
-// "last_metadata_sync" BIGINT,
-// "created_at" BIGINT,
-// "updated_at" BIGINT
 
 #[derive(Insertable, Queryable, Debug, Clone, Serialize, Deserialize)]
 #[diesel(table_name = collections)]
@@ -40,9 +29,9 @@ pub struct Collection {
     pub tx: Option<String>,
     pub metadata: String,
     pub verify: bool,
-    pub last_metadata_sync: i64,
-    pub created_at: i64,
-    pub updated_at: i64,
+    pub last_metadata_sync: DateTime<Utc>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 #[derive(Queryable, PartialEq, Debug, Clone)]
