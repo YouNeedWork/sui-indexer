@@ -1,10 +1,10 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 
 use bytes::Buf;
 use lazy_static::lazy_static;
-use rusoto_core::credential::StaticProvider;
 use rusoto_core::Region;
-use rusoto_s3::{GetObjectRequest, PutObjectRequest, S3Client, S3};
+use rusoto_core::credential::StaticProvider;
+use rusoto_s3::{GetObjectRequest, PutObjectRequest, S3, S3Client};
 
 const REGION: Region = Region::UsWest1;
 const BUCKET: &str = "bobyard";

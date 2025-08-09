@@ -1,9 +1,9 @@
+use crate::PgPool;
 use crate::aws::S3Store;
 use crate::token_worker::{
     batch_run_create_channel, handle_token_delete, handle_token_unwrap,
     handle_token_unwrap_when_delete, handle_token_update, handle_token_wrap,
 };
-use crate::PgPool;
 use anyhow::Result;
 use futures::future::try_join_all;
 use lapin::Connection;

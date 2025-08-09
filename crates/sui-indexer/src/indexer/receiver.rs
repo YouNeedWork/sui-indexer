@@ -1,9 +1,9 @@
+use crate::ObjectStatus;
 use crate::models::collections::Collection;
 use crate::models::tokens::Token;
-use crate::ObjectStatus;
 use lapin::{
-    options::*, types::FieldTable, BasicProperties, Connection, ExchangeKind,
-    Result,
+    BasicProperties, Connection, ExchangeKind, Result, options::*,
+    types::FieldTable,
 };
 
 use tokio::sync::mpsc::Receiver;

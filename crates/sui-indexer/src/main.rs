@@ -23,7 +23,9 @@ async fn main() -> Result<()> {
 
     tracing::subscriber::set_global_default(subscriber)
         .expect("setting default subscriber failed");
+
     let config = sui_indexer::config::Config::from_args();
+
     if let Err(e) = sui_indexer::run(config).await {
         panic!("Error: {}", e);
     }

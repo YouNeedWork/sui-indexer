@@ -109,7 +109,7 @@ pub fn event_handle(
         }
         KioskEvent::ItemDelisted(de_list) => {
             info!("de_list {:?}", de_list);
-            lists::delete(pg, &de_list.id).expect("batch_insert error");
+            lists::cancel(pg, &de_list.id).expect("batch_insert error");
         }
     }
 

@@ -1,6 +1,6 @@
+use crate::ObjectStatus;
 use crate::models::activities::{Activity, ActivityType};
 use crate::models::tokens::{Token, TokenStatus};
-use crate::ObjectStatus;
 use anyhow::Result;
 
 use std::collections::HashMap;

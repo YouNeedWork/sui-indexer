@@ -1,9 +1,9 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use futures::future::join_all;
 use redis::Commands;
 
-use crate::aws::S3Store;
 use crate::PgPool;
+use crate::aws::S3Store;
 use futures::StreamExt;
 use lapin::options::{BasicAckOptions, BasicNackOptions, BasicQosOptions};
 use lapin::types::FieldTable;
@@ -14,7 +14,7 @@ use sui_indexer::models::collections::{
     query_collection, update_collection_metadata,
 };
 //use sui_indexer::models::tokens::count_star;
-use sui_indexer::models::tokens::{update_image_url, Token};
+use sui_indexer::models::tokens::{Token, update_image_url};
 use tracing::{error, info};
 
 const TOKEN_CREATE: &str = "token.create";

@@ -32,3 +32,7 @@ lapin = "2.1.1"
 sui-sdk = { git = "https://github.com/MystenLabs/sui", rev="fdfd864" }
 chrono = "0.4.24"
 redis = { version = "0.23.0", features = ["tokio-comp"] }
+
+diesel = { version = "2.2.12", features = ["postgres","r2d2","chrono"] }
+diesel-async = { version = "0.6.1",features = ["postgres"]}
+diesel-derive-enum = { version = "^2.1.0", features = ["postgres"] }

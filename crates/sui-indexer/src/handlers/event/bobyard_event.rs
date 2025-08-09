@@ -214,11 +214,11 @@ pub fn event_handle(
         }
         BobYardEvent::DeList(de_list) => {
             info!("de_list {:?}", de_list);
-            lists::delete(pg, &de_list.list_id).expect("batch_insert error");
+            lists::cancel(pg, &de_list.list_id).expect("batch_insert error");
         }
         BobYardEvent::Buy(buy) => {
             // delete the list.
-            lists::delete(pg, &buy.list_id).expect("batch_insert error");
+            lists::dealed(pg, &buy.list_id).expect("batch_insert error");
             // insert the order.
             let mut order: orders::Order = buy.into();
             info!("buy {:?}", order);
@@ -229,9 +229,9 @@ pub fn event_handle(
         }
         BobYardEvent::AcceptOffer(accept_offer) => {
             // delete the list.
-            lists::delete(pg, &accept_offer.list_id)
+            lists::dealed(pg, &accept_offer.list_id)
                 .expect("batch_insert error");
-            offers::delete(pg, &accept_offer.offer_id)
+            offers::dealed(pg, &accept_offer.offer_id)
                 .expect("batch_insert error");
             let mut order: orders::Order = accept_offer.into();
             info!("accept_offer {:?}", order);
@@ -251,8 +251,8 @@ pub fn event_handle(
         }
         BobYardEvent::CancelOffer(cancel_offer) => {
             info!("cancel_offer {:?}", cancel_offer);
-            offers::delete(pg, &cancel_offer.offer_id)
-                .expect("batch_insert error");
+            offers::cancel(pg, &cancel_offer.offer_id)
+                .expect("delete offer error");
         }
     }
     //});

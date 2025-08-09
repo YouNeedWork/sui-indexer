@@ -5,14 +5,15 @@ pub mod models;
 pub mod schema;
 pub mod utils;
 
-use anyhow::{anyhow, Error, Result};
+use anyhow::{Error, Result, anyhow};
 use config::Config;
 use diesel::pg::PgConnection;
 use diesel::r2d2::ConnectionManager;
-use futures::future::join_all;
 use futures::FutureExt;
+use futures::future::join_all;
 use indexer::Indexer;
 use lapin::ConnectionProperties;
+use sui_sdk::SuiClientBuilder;
 use sui_sdk::apis::ReadApi;
 use sui_sdk::rpc_types::SuiTransactionBlockData::V1;
 use sui_sdk::rpc_types::{
@@ -21,12 +22,11 @@ use sui_sdk::rpc_types::{
     SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions,
 };
 use sui_sdk::types::digests::TransactionDigest;
-use sui_sdk::SuiClientBuilder;
 
 use crate::indexer::receiver::{IndexSender, IndexingMessage};
 use sui_sdk::types::base_types::{ObjectID, SequenceNumber};
 
-const MULTI_GET_CHUNK_SIZE: usize = 500;
+const MULTI_GET_CHUNK_SIZE: usize = 50;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum ObjectStatus {

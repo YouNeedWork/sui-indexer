@@ -1,7 +1,7 @@
+use crate::ObjectStatus;
 use crate::handlers::event::bobyard_event::BobYardEvent;
 use crate::models::activities::{Activity, ActivityType};
 use crate::models::tokens::Token;
-use crate::ObjectStatus;
 
 use super::event::EventIndex;
 

@@ -1,30 +1,32 @@
 pub mod receiver;
 
 use anyhow::{Error, Result};
-use diesel::pg::PgConnection;
-use diesel::r2d2::{ConnectionManager, Pool};
 use diesel::ExpressionMethods;
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;
+use diesel::pg::PgConnection;
+use diesel::r2d2::{ConnectionManager, Pool};
 use futures::future::join_all;
 
 use futures::StreamExt;
 use redis::Commands;
 use std::collections::HashMap;
+use std::time::Duration;
+use tokio::time;
 
-use sui_sdk::types::messages_checkpoint::CheckpointSequenceNumber;
 use sui_sdk::SuiClient;
+use sui_sdk::types::messages_checkpoint::CheckpointSequenceNumber;
 use tokio::sync::mpsc::Sender;
 
-use crate::handlers::event::{event_handle, EventAccount};
+use crate::handlers::event::{EventAccount, event_handle};
 use crate::models::activities::batch_insert as batch_insert_activities;
 use crate::models::check_point::query_check_point;
 use crate::models::collections::batch_insert;
 
 use crate::models::tokens::batch_change;
 use crate::{
-    fetch_changed_objects, get_deleted_db_objects, get_object_changes,
-    multi_get_full_transactions, ObjectStatus,
+    ObjectStatus, fetch_changed_objects, get_deleted_db_objects,
+    get_object_changes, multi_get_full_transactions,
 };
 
 use sui_sdk::rpc_types::{
@@ -37,13 +39,13 @@ use crate::handlers::collection::{collection_indexer_work, parse_collection};
 use crate::handlers::event::parse_event;
 use crate::handlers::token::{parse_tokens, token_indexer_work};
 use crate::indexer::receiver::IndexingMessage;
-use tracing::{info, warn};
+use tracing::{debug, info, warn};
 
 extern crate redis;
 
+use crate::MULTI_GET_CHUNK_SIZE;
 use crate::schema::check_point::dsl::check_point;
 use crate::schema::check_point::{chain_id, version};
-use crate::MULTI_GET_CHUNK_SIZE;
 
 #[derive(Clone)]
 pub(crate) struct Indexer {
@@ -114,7 +116,7 @@ impl Indexer {
                     downloaded_checkpoints.push(checkpoint);
                 } else {
                     if let Err(fn_e) = download_result {
-                        warn!(
+                        debug!(
                             "Unexpected response from fullnode for checkpoints: {}",
                             fn_e
                         );
@@ -124,10 +126,18 @@ impl Indexer {
             }
 
             if downloaded_checkpoints.is_empty() {
+                let last_sequence = self
+                    .sui_client
+                    .read_api()
+                    .get_latest_checkpoint_sequence_number()
+                    .await?;
+
                 warn!(
-                    "No checkpoints were downloaded for sequence number {}, retrying...",
-                    indexer
+                    "No checkpoints were downloaded for sequence number {} last_sequence {}, retrying... in 1s",
+                    indexer, last_sequence,
                 );
+
+                time::sleep(Duration::from_secs(1)).await;
                 continue;
             }
 

@@ -69,9 +69,16 @@ pub fn batch_insert(
         .map_err(|e| anyhow::anyhow!(e.to_string()))
 }
 
-pub fn delete(connection: &mut PgConnection, list_id: &str) -> Result<usize> {
+pub fn cancel(connection: &mut PgConnection, list_id: &str) -> Result<usize> {
     diesel::update(lists::table.filter(lists::list_id.eq(list_id)))
         .set(lists::list_type.eq(ListType::Canceled))
+        .execute(connection)
+        .map_err(|e| anyhow::anyhow!(e.to_string()))
+}
+
+pub fn dealed(connection: &mut PgConnection, list_id: &str) -> Result<usize> {
+    diesel::update(lists::table.filter(lists::list_id.eq(list_id)))
+        .set(lists::list_type.eq(ListType::Sold))
         .execute(connection)
         .map_err(|e| anyhow::anyhow!(e.to_string()))
 }

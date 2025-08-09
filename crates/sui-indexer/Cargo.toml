@@ -1,7 +1,7 @@
 [package]
 name = "sui-indexer"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [[bin]]
 name = "sui-indexer"
@@ -9,9 +9,10 @@ path = "src/main.rs"
 
 [dependencies]
 tokio = { workspace = true }
-diesel = { version = "2.0.3", features = ["postgres","r2d2","chrono"] }
-diesel-async = { version = "0.2.1",features = ["postgres"]}
-diesel-derive-enum = { version = "^2.0.1", features = ["postgres"] }
+diesel = {workspace = true}
+diesel-async = {workspace =true}
+diesel-derive-enum = {workspace=true}
+
 futures = {workspace=true}
 serde = { workspace=true}
 serde_json = {workspace =true}
@@ -21,7 +22,8 @@ sui-sdk = {workspace=true}
 tracing = {workspace=true}
 tracing-subscriber = {workspace=true}
 chrono = {workspace=true}
-redis = { version = "0.23.0", features = ["tokio-comp"] }
+redis = {workspace=true} 
+
 structopt = "0.3.26"
 flume = "0.10.14"
 dotenv = "0.15.0"
